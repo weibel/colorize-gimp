@@ -21,7 +21,7 @@ The downloads section features compiled binaries for various platforms. Please s
 
 ## Installation
 
- * Linux install the package libsuitesparse on your system with your favourite package manager
- * OSX use e.g. Macports or Fink and ´sudo port install suitesparse´ in the terminal 
+ * *Linux:* install the package libsuitesparse on your system with your favourite package manager
+ * *OSX:* use e.g. Macports or Fink and ´sudo port install suitesparse´ in the terminal 
  
  Copy the binary into your Gimp plug-ins folder
