@@ -17,5 +17,5 @@ Implemented by Christopher Lais https://github.com/zinx/
 
 ## Downloads
 
-The downloads section features compiled binaries for various platforms
+The downloads section features compiled binaries for various platforms. Please send your binaries!
 
