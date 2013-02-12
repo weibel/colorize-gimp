@@ -7,6 +7,7 @@ Plugin for The Gimp. Stills only.
 Examples of the algorithm: http://www.cs.huji.ac.il/~yweiss/Colorization/
 
 Implemented by Christopher Lais https://github.com/zinx/
+Optimizations by https://bitbucket.org/grimboy/colorize-gimp
 
 ## Installation
 
