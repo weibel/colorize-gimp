@@ -18,23 +18,23 @@ To install:
 Needs libsuitesparse.
 
 On Ubuntu 9.04:
-´sudo apt-get install libsuitesparse-3.2.0 libsuitesparse-dev´
+`sudo apt-get install libsuitesparse-3.2.0 libsuitesparse-dev`
 
 On OSX
-Use e.g. Macports and ´sudo port install suitesparse´ in the terminal 
+Use e.g. Macports and `sudo port install suitesparse` in the terminal 
 
 ## Hints for compiling 
 
 On Linux you need to install the gtk libraries first:
-´sudo aptitude install libgtk2.0-dev´
+`sudo aptitude install libgtk2.0-dev`
 
-Note that ´apt-get´ wont work as well as it wont resolve the dependencies issues properly.
+Note that `apt-get` wont work as well as it wont resolve the dependencies issues properly.
 
 Also libsuitesparse-dev is required for compiling
-´sudo aptitude install libsuitesparse-dev´
+`sudo aptitude install libsuitesparse-dev`
 
 You also need the gimp development package
-´sudo aptitude install libgimp2.0-dev´
+`sudo aptitude install libgimp2.0-dev`
 
 Windows users will probably need something like CodeBlocks with the MingGW compiler
 http://www.codeblocks.org/downloads/binaries
