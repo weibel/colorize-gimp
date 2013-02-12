@@ -36,6 +36,19 @@ static void rgb2yiq(
 #endif
 }
 
+static void rgb2iq(
+	guchar r, guchar g, guchar b,
+	gdouble *i, gdouble *q
+) {
+#if YUV
+	*i = (0.147*r - 0.289*g + 0.436*b) / (gdouble)255;
+	*q = (0.615*r - 0.515*g - 0.100*b) / (gdouble)255;
+#else
+	*i = (0.596*r - 0.274*g - 0.322*b) / (gdouble)255;
+	*q = (0.212*r - 0.523*g + 0.311*b) / (gdouble)255;
+#endif
+}
+
 static void yiq2rgb(
 	gdouble y, gdouble i, gdouble q,
 	guchar *r, guchar *g, guchar *b
@@ -58,32 +71,6 @@ static void yiq2rgb(
 	*b = 255 * db;
 }
 
-#if 0
-static void row_to_yiq(guchar *row, int row_y, int bpp, int width, gdouble *y, gdouble *i, gdouble *q)
-{
-	int j;
-	int yw = row_y*width;
-	for (j = 0; j < width; j++) {
-		rgb2yiq(
-			row[j*bpp], row[j*bpp+1], row[j*bpp+2],
-			&y[yw+j], &i[yw+j], &q[yw+j]
-		);
-	}
-}
-
-static void row_from_yiq(guchar *row, int row_y, int bpp, int width, gdouble *y, gdouble *i, gdouble *q)
-{
-	int j;
-	int yw = row_y*width;
-	for (j = 0; j < width; j++) {
-		yiq2rgb(
-			y[yw+j], i[yw+j], q[yw+j],
-			&row[j*bpp], &row[j*bpp+1], &row[j*bpp+2]
-		);
-	}
-}
-#endif
-
 #define LN_100	4.60517018598809136804
 
 void colorize(
@@ -101,7 +88,8 @@ void colorize(
 
 	guchar *rgb;
 	double *Y, *I, *Q;
-	double *inI, *inQ;
+	double *inI = NULL; // both only used if vals->use_chroma
+	double *inQ = NULL;
 	unsigned char *mask;
 	double *outI, *outQ;
 
@@ -116,7 +104,8 @@ void colorize(
 	double control[UMFPACK_CONTROL];
 	double info[UMFPACK_INFO];
 
-	guchar *img_row, *mark_row, *sel_row;
+	guchar *img_row, *mark_row;
+	guchar *sel_row = NULL; // only used if sel
 
 	GimpPixelRgn src_rgn, dst_rgn, mark_rgn, sel_rgn;
 
@@ -204,11 +193,9 @@ void colorize(
 			/* Nothing set in the entire selection. */
 			gimp_drawable_detach(sel);
 			sel = NULL;
-
-		  good_selection:
-			sel = sel;
 		}
 	}
+	good_selection:
 
 	img_row = V_ALLOC(*rgb, w*src_rgn.bpp);
 	mark_row = V_ALLOC(*rgb, w*mark_rgn.bpp);
@@ -223,7 +210,6 @@ void colorize(
 			int sel_idx = j*sel_rgn.bpp;
 
 			gdouble iY, iI, iQ;
-			gdouble mY;
 			
 			gint delta = 0;
 
@@ -264,11 +250,11 @@ void colorize(
 				&& mark_row[mark_idx+3] >= thresh_guc)
 			) {
 				M_V(mask, i, j) = TRUE;
-				rgb2yiq(
+				rgb2iq(
 					mark_row[mark_idx],
 					mark_row[mark_idx+1],
 					mark_row[mark_idx+2],
-					&mY, &iI, &iQ
+					&iI, &iQ
 				);
 			} else if (sel && sel_row[sel_idx] < thresh_guc) {
 				M_V(mask, i, j) = TRUE;
@@ -399,12 +385,12 @@ void colorize(
 	free(I); free(Q);
 
 	img_row = V_ALLOC(*rgb, w*src_rgn.bpp);
+	int img_idx;
 	for (i = 0; i < h; i++) {
 		/* FIXME: This is only for the alpha channel.. */
 		gimp_pixel_rgn_get_row(&src_rgn, img_row, src_rgn.x, src_rgn.y + i, w);
 
-		for (j = 0; j < w; j++) {
-			int img_idx = j*src_rgn.bpp;
+		for (j = 0, img_idx = 0; j < w; j++, img_idx += src_rgn.bpp) {
 			yiq2rgb(
 				M_V(Y, i, j),
 				M_V(outI, i, j),

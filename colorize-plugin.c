@@ -25,7 +25,13 @@ static colorize_vals_t colorizevals = {
 
 static gint dialog_marked_constrain(gint32 image_id, gint32 drawable_id, gpointer data)
 {
-	return gimp_drawable_is_rgb(drawable_id) && gimp_drawable_has_alpha(drawable_id);
+	gboolean *has_guide_layer = (gboolean*)data;
+	if (gimp_drawable_is_rgb(drawable_id) && gimp_drawable_has_alpha(drawable_id)) {
+		*has_guide_layer = TRUE;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
 }
 
 static void dialog_marked_cb(GtkWidget *widget, gpointer data)
@@ -61,6 +67,7 @@ static gboolean colorize_dialog(GimpDrawable *default_drawable)
 	GtkWidget *dialog, *combo;
 	GimpDrawable *marked;
 	gint status;
+	gboolean has_guide_layer = FALSE;
 
 	gimp_ui_init("colorize", TRUE);
 
@@ -79,10 +86,16 @@ static gboolean colorize_dialog(GimpDrawable *default_drawable)
 	if (colorizevals.marked_id == -1)
 		colorizevals.marked_id = default_drawable->drawable_id;
 	marked = gimp_drawable_get(colorizevals.marked_id);
-	if (!marked) return FALSE;
+	if (!marked) {
+		return FALSE;
+	}
 
 	/**/
-	combo = gimp_drawable_combo_box_new(dialog_marked_constrain, NULL);
+	combo = gimp_drawable_combo_box_new(dialog_marked_constrain, &has_guide_layer);
+	if (!has_guide_layer) {
+		g_message("Color markers must be placed on an new RGB layer with an alpha channel.\n");
+		return 0;
+	}
 	gimp_int_combo_box_connect(
 		GIMP_INT_COMBO_BOX(combo), colorizevals.marked_id,
 		G_CALLBACK(dialog_marked_cb), &marked
