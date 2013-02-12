@@ -8,6 +8,16 @@ Examples of the algorithm: http://www.cs.huji.ac.il/~yweiss/Colorization/
 
 Implemented by Christopher Lais https://github.com/zinx/
 
+## Installation
+
+To install:
+$ make
+$ cp colorize ~/.gimp-2.6/plug-ins/
+
+Needs libsuitesparse.
+On Ubuntu 9.04:
+sudo apt-get install libsuitesparse-3.2.0 libsuitesparse-dev
+
 ## Hints for compiling 
 
 On Linux you need to install the gtk libraries first:
