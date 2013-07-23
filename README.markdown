@@ -41,12 +41,20 @@ Windows users will probably need something like CodeBlocks with the MingGW compi
 http://www.codeblocks.org/downloads/binaries
 
 Then get the GTK dependencies from somewhere.
+This [translated page](http://translate.google.com/translate?hl=en&sl=de&u=http://www.pronix.de/pronix-1212.html&prev=/search%3Fq%3Dbuild%2Ba%2BGIMP%2Bplug-in%2Bon%2Bwindows%2Bcodeblocks%26hl%3Den%26tbo%3Dd%26biw%3D1278%26bih%3D518&sa=X&ei=9WWhUKWtLOrQyAG8jIGIBQ&ved=0CDsQ7gEwAQ) has a bit of help.
 
-This [translated page](http://translate.google.com/translate?hl=en&sl=de&u=http://www.pronix.de/pronix-1212.html&prev=/search%3Fq%3Dbuild%2Ba%2BGIMP%2Bplug-in%2Bon%2Bwindows%2Bcodeblocks%26hl%3Den%26tbo%3Dd%26biw%3D1278%26bih%3D518&sa=X&ei=9WWhUKWtLOrQyAG8jIGIBQ&ved=0CDsQ7gEwAQ) has a bit of help
+On some systems there's a problem with lf77blas and people get an error like:
 
-The Makefile wont work on Windows either as it has unix paths in it.
+    /usr/lib/gcc/x86_64-pc-linux-gnu/4.6.3/../../../../x86_64-pc-linux-gnu/bin/ld: cannot find -lf77blas
+    collect2: ld returned 1 exit status
+    make: *** [colorize] Error 1
 
-Thanks to GitHub user [opticyclic](https://github.com/opticyclic) for help on Linux
+Try modifying 'lf77blas' in the Makefile to 'lblas'
+
+The Makefile won't work on Windows either as it has unix paths in it.
+
+Thanks to GitHub user [opticyclic](https://github.com/opticyclic) and [reverland](https://github.com/https://github.com/reverland) for help on Linux
+
 
 ## Other resources for compiling etc.
 
