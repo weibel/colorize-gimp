@@ -29,7 +29,7 @@ Use e.g. Macports and `sudo port install suitesparse` in the terminal
 On Linux you need to install the gtk libraries first:
 `sudo aptitude install libgtk2.0-dev`
 
-Note that `apt-get` wont work as well as it wont resolve the dependencies issues properly.
+Note that `apt-get` won't work as well as it won't resolve the dependency issues properly.
 
 Also libsuitesparse-dev is required for compiling
 `sudo aptitude install libsuitesparse-dev`
