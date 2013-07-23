@@ -53,7 +53,7 @@ Try modifying 'lf77blas' in the Makefile to 'lblas'
 
 The Makefile won't work on Windows either as it has unix paths in it.
 
-Thanks to GitHub user [opticyclic](https://github.com/opticyclic) and [reverland](https://github.com/https://github.com/reverland) for help on Linux
+Thanks to GitHub user [opticyclic](https://github.com/opticyclic) and [reverland](https://github.com/reverland) for help on Linux
 
 
 ## Other resources for compiling etc.
